@@ -14,8 +14,8 @@ const Login = () => {
   const email =useInputValidation("");
   const avatar=useFileHandler("single")
 
-  const handleLogin=()=>{e.preventDefault()}
-  const handleSignUp=()=>{e.preventDefault()}
+  const handleLogin=(e)=>{e.preventDefault()}
+  const handleSignUp=(e)=>{e.preventDefault()}
 
   return (<Container component={"main"}  maxWidth="xs" sx={{height:"100vh",display:"flex" ,justifyContent:"center",alignItems:"center"}}>
 
