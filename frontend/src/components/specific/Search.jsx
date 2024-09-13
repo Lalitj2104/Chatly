@@ -12,8 +12,9 @@ import React, { useState } from "react";
 import { useInputValidation } from "6pp";
 import { Search as SearchIcon } from "@mui/icons-material";
 import UserItem from "../shared/UserItem";
+import { sampleUsers } from "../../constants/sampleData";
 
-const users = [1, 2, 3, 4];
+
 
 
 
@@ -22,7 +23,7 @@ const users = [1, 2, 3, 4];
 const Search = () => {
   const search = useInputValidation("");
 
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(sampleUsers);
 
   let isLoadingSendFriendRequest = false;
 

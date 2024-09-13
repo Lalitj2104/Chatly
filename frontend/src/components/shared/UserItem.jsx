@@ -2,11 +2,11 @@ import { Add as AddIcon } from "@mui/icons-material";
 import { Avatar, IconButton, ListItem, Stack, Typography } from "@mui/material";
 import React, { memo } from "react";
 
-const UserItem = (user, handler, handlerIsLoading) => {
+const UserItem = ({user, handler, handlerIsLoading}) => {
   const { name, _id, avatar } = user;
 
   return (
-    <ListItem key={index}>
+    <ListItem >
       <Stack
         direction={"row"}
         alignItems={"center"}
@@ -22,6 +22,7 @@ const UserItem = (user, handler, handlerIsLoading) => {
             WebkitBoxOrientation:"vertical",
           overflow: "hidden",
           textOverflow: "ellipsis",
+          width: "100%",
         }}
         >{name}</Typography>
         <IconButton 
