@@ -1,10 +1,18 @@
 import React from 'react'
 import App from '../App';
 import { AppLayout } from '../components/layout/AppLayout';
+import { Typography } from '@mui/material';
 
 const Home = () => {
   return (
-    <div>Home</div> 
+      <Typography
+        variant="h5"
+        align="center"
+        gutterBottom
+        style={{ padding: '2rem 0' }}
+      >
+        Select a user to chat
+      </Typography>
   )
 }
 export default AppLayout()(Home);
