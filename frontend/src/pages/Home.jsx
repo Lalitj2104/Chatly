@@ -9,7 +9,7 @@ const Home = () => {
         variant="h5"
         align="center"
         gutterBottom
-        style={{ padding: '2rem 0' }}
+        style={{ padding: 'rem 0' }}
       >
         Select a user to chat
       </Typography>

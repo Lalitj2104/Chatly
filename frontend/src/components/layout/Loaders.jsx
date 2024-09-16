@@ -10,11 +10,11 @@ export const LayoutLoader = () => {
         </Grid>
         <Grid item xs={12} sm={8}  lg={5} height={"100vh"}>
           <Stack spacing={"0.5em"}>
-            {Array.from({ length: 10 }).map((_, index) => (
+            {Array.from({ length: 15 }).map((_, index) => (
               <Skeleton
                 key={index}
                 variant="rectangular"
-                height={"5rem"}
+                height={"3rem"}
                 animation="wave"
               />
             ))}

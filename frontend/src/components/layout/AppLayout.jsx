@@ -25,7 +25,7 @@ export const AppLayout = () => (WrappedComponent) => {
           container
           height={"calc(100vh - 4rem)"}
           justifyContent="space-between"
-          spacing={0}
+          
         >
           <Grid
             item
@@ -35,6 +35,7 @@ export const AppLayout = () => (WrappedComponent) => {
               display: { xs: "none", sm: "block" },
               padding: "1rem",
               bgcolor: "primary.main",
+              // spacing:0
             }}
             height={"100%"}
           >
@@ -44,18 +45,18 @@ export const AppLayout = () => (WrappedComponent) => {
               handleDeleteChat={handleDeleteChat}
             />
           </Grid>
-          <Grid item xs={12} sm={5} lg={4} height={"100%"}>
+          <Grid item xs={12} sm={8} lg={5} height={"100%"} sx={{padding:0,spacing:0}}>
             <WrappedComponent {...props} />
           </Grid>
           <Grid
             item
-            sm={3}
             md={3}
             lg={4}
             sx={{
               display: { xs: "none", md: "block" ,lg:"block"},
               padding: "2rem",
               bgcolor: "secondary.main",
+              // spacing:0
             }}
             height={"100%"}
           >

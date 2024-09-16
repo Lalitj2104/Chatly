@@ -18,7 +18,7 @@ import {
   TipsAndUpdates as AIIcon
 } from "@mui/icons-material";
 import { orange } from "../../constants/color";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import IconButtonComp from "../layout/HeaderComp";
 const Search = lazy(()=>import("../specific/Search"))
 const Notifications=lazy(()=>import("../specific/Notifications"))
@@ -29,7 +29,7 @@ const Header = () => {
   const [isSearch,setIsSearch]=useState(false);
   const [isNewGroup,setIsNewGroup]=useState(false);
   const [isNotification,setIsNotification]=useState(false);
-
+  const navigate = useNavigate();
   const AiHandler = () => {
     console.log("ur chatting with AI");
   };
@@ -45,7 +45,7 @@ const Header = () => {
     setIsNewGroup(prev=>!prev);
   };
   const openGroups=()=>{
-    Navigate("/groups")
+    navigate("/groups")
   }
   const LogoutHandler=()=>{
     console.log("logout");

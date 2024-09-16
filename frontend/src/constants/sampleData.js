@@ -56,3 +56,37 @@ export const sampleNotification = [
     _id: "2",
   },
 ];
+
+export const sampleMessages = [
+ { attachments:[
+    {
+      public_id:"asdfghjk",
+      url:"https://res.cloudinary.com/dw3arrxnf/image/upload/v1635365546/1.png",
+    },
+  ],
+  content:"hello buddy",
+  _id:"sdfgdsghjgfdssfdgh",
+  sender:{
+    _id:"user._id",
+    name:"John Doe",
+  },
+  chat:"chatId",
+  createdAt:"2021-10-27T14:00:00.000Z",
+},
+
+{ attachments:[
+  {
+    public_id:"asdfghjk 2",
+    url:"https://res.cloudinary.com/dw3arrxnf/image/upload/v1635365546/1.png",
+  },
+],
+content:"hello buddydefrg",
+_id:"sdfgdsghjgfddfssfdgh",
+sender:{
+  _id:"asdfghjkl",
+  name:"John Doev 2",
+},
+chat:"chatId",
+createdAt:"2021-10-27T14:00:00.000Z",
+},
+];
