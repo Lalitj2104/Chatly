@@ -2,7 +2,10 @@ import { Box, Drawer, Grid, IconButton } from "@mui/material";
 import React, { useState } from "react";
 import AdminSideBar from "../shared/AdminSideBar";
 import { Close, Menu } from "@mui/icons-material";
+import { Navigate } from "react-router-dom";
 
+
+const isAdmin = true;
 const AdminLayout = ({ children }) => {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -11,6 +14,9 @@ const AdminLayout = ({ children }) => {
   };
   const handleClose = () => {
     setIsMobile(false);
+  }
+  if (!isAdmin) {
+    return <Navigate to="/admin" />;
   }
 
   return (
@@ -31,7 +37,7 @@ const AdminLayout = ({ children }) => {
         <Grid item md={4} lg={3} sx={{ display: { xs: "none", md: "block" } }}>
           <AdminSideBar />
         </Grid>
-        <Grid item xs={12} md={8} lg={9} sx={{ bgcolor: "#f5f5f5" }}>
+        <Grid item xs={12} md={8} lg={9} sx={{ bgcolor: "#f5f5f5" }} >
           {children}
         </Grid>
 

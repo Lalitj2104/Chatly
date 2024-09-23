@@ -36,6 +36,8 @@ const Group = () => {
   const [groupNameUpdatedValue, setGroupNameUpdatedValue] = useState("");
   const [confirmDeleteDialog, setConfirmDeleteDialog] = useState(false);
 
+
+
   const navigateBack = () => {
     navigate("/");
   };
@@ -56,6 +58,7 @@ const Group = () => {
 
   };
 
+
   const closeConfirmDeleteDialog = () => setConfirmDeleteDialog(false);
 
   useEffect(() => {
@@ -69,6 +72,9 @@ const Group = () => {
       setIsEdit(false);
     };
   }, [chatId]);
+
+
+
   const IconBtn = (
     <>
       <Box
@@ -285,6 +291,7 @@ const GroupListItem = memo(({ group, chatId }) => {
     </Link>
   );
 });
+
 
 const GroupsList = ({ w = "100%", myGroups = [], chatId }) => (
   <Stack width={w}>
