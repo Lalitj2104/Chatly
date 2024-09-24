@@ -90,3 +90,103 @@ chat:"chatId",
 createdAt:"2021-10-27T14:00:00.000Z",
 },
 ];
+
+
+
+
+export const dashBoardData={
+  users:[
+    {
+      name:"John Doe",
+      avatar:"https://res.cloudinary.com/dw3arrxnf/image/upload/v1635365546/1.png",
+      _id:"1",
+      username:"JohnDoe",
+      friends:20,
+      groups:10
+    },
+    {
+      name:"John Doe 2",
+      avatar:"https://res.cloudinary.com/dw3arrxnf/image/upload/v1635365546/1.png",
+      _id:"2",
+      username:"JohnDoe2",
+      friends:30,
+      groups:15
+    },
+  ],
+
+
+ chats:[{
+  name:"Chat 1",
+  avatar:["https://res.cloudinary.com/dw3arrxnf/image/upload/v1635365546/1.png"],
+  _id:"1",
+  totalMembers:10,
+  groupChat:false,
+  members:[{_id:"1",
+    avatar:"https://res.cloudinary.com/dw3arrxnf/image/upload/v1635365546/1.png"
+  },{_id:"2",
+    avatar:"https://res.cloudinary.com/dw3arrxnf/image/upload/v1635365546/1.png"
+  }],
+  totalMembers:10,
+  totalMessages:20,
+  creator:{
+    name:"John Doe",
+    avatar:"https://res.cloudinary.com/dw3arrxnf/image/upload/v1635365546/1.png",
+  }
+},
+{
+  name:"Chat 2",
+  avatar:["https://res.cloudinary.com/dw3arrxnf/image/upload/v1635365546/1.png"],
+  _id:"2",
+  totalMembers:10,
+  groupChat:true,
+  totalMessages:20,
+  members:[{_id:"1",
+    avatar:"https://res.cloudinary.com/dw3arrxnf/image/upload/v1635365546/1.png"
+  },{_id:"2",
+    avatar:"https://res.cloudinary.com/dw3arrxnf/image/upload/v1635365546/1.png"
+  }],
+  totalMessages:20,
+  creator:{
+    name:"John Doe",
+    avatar:"https://res.cloudinary.com/dw3arrxnf/image/upload/v1635365546/1.png",
+  }
+}]
+,
+messages:[
+  {
+    attachments:[
+      {
+        public_id:"asdfghjk",
+        url:"https://res.cloudinary.com/dw3arrxnf/image/upload/v1635365546/1.png",
+      },
+    ],
+    content:"hello buddy",
+    _id:"sdfgdsghjgfdssfdgh",
+    sender:{
+      avatar:"https://res.cloudinary.com/dw3arrxnf/image/upload/v1635365546/1.png",
+      name:"John Doe",
+    },
+    chat:"chatId",
+    groupChat:false,
+    createdAt:"2021-10-27T14:00:00.000Z",
+  },
+  
+  { attachments:[
+    {
+      public_id:"asdfghjk 2",
+      url:"https://res.cloudinary.com/dw3arrxnf/image/upload/v1635365546/1.png",
+    },
+  ],
+  content:"hello buddydefrg",
+  _id:"sdfgdsghjgfddfssfdgh",
+  sender:{
+    avatar:"https://res.cloudinary.com/dw3arrxnf/image/upload/v1635365546/1.png",
+    name:"John Doev 2",
+  },
+  chat:"chatId",
+  groupChat:true,
+  createdAt:"2021-10-27T14:00:00.000Z",
+  },
+]
+
+}
