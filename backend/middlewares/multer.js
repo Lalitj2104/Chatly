@@ -7,4 +7,5 @@ const multerUpload = multer({limits:{
 });
 
 export const singleUpload = multerUpload.single('avatar');
+export const attachmentUpload = multerUpload.array('files',5);
 

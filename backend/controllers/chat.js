@@ -127,6 +127,13 @@ export const addMembers=async(req,res,next)=>{
                 message:"All fields are required"
             })
         }
+        if(members.length<1){
+            return res.status(400).json({
+                success:false,
+                message:"No members to add"
+            })
+        }
+
         const chat=await Chat.findById(chatId);
         if(!chat){
             return res.status(404).json({
@@ -148,6 +155,8 @@ export const addMembers=async(req,res,next)=>{
         }
         const allNewMembersPromise=members.map((i)=>UserActivation.findById(i,"name"));
         const allNewMembers=await Promise.all(allNewMembersPromise);
+        const uniques=allNewMembers.filter((i)=>!chat.members.includes(i._id.toString())).map((i)=>i._id);
+        
         chat.members.push(...allNewMembers.map((i)=>i._id));
         if(chat.members.length>80){
             return res.status(400).json({
@@ -174,4 +183,126 @@ export const addMembers=async(req,res,next)=>{
     next(error);
 }
 
+}
+
+
+export const removeMember=async(req,res,next)=>{
+try {
+    const {userId,chatId}=req.body;
+    if(!userId || !chatId){
+        return res.status(400).json({
+            success:false,
+            message:"All fields are required"
+        })
+    }
+
+    const [chat,userRemoved]=await Promise.all([
+        Chat.findById(chatId),
+        User.findById(userId,"name"),
+    ]);
+    if(!chat){
+        return res.status(404).json({
+            success:false,
+            message:"Chat not found"
+        })
+    }
+    if(!groupChat){
+        return res.status(400).json({
+            success:false,
+            message:"This is not a group chat"
+        })
+    }
+    if(!userRemoved){
+        return res.status(404).json({
+            success:false,
+            message:"User not found"
+        })
+    }
+
+    if(chat.members.length<3){
+        return res.status(400).json({
+            success:false,
+            message:"Group should have atleast 2 members"
+        })
+    }
+    chat.members=chat.members.filter((i)=>i.toString()!==userId.toString());
+    await chat.save();
+    emitEvent(req,ALERT,chat.members,`${userRemoved.name} removed from ${chat.name} group`);
+    emitEventmitt(req,REFETCH_CHATS,chat.members);
+    res.status(200).json({
+        success:true,
+        message:"Member removed successfully"
+    })
+    
+} catch (error) {
+    next(error);
+}
+
+
+}
+
+export const leaveGroup=async(req,res,next)=>{
+    try {
+        const chatId=req.params.id;
+        if(!chatId){
+            return res.status(400).json({
+                success:false,
+                message:"Chat id is required"
+            })
+        }
+        const chat=await Chat.findById(chatId);
+        if(!chat){
+            return res.status(404).json({
+                success:false,
+                message:"Chat not found"
+            })
+        }
+        if(!chat.groupChat){
+            return res.status(400).json({
+                success:false,
+                message:"This is not a group chat"
+            })
+        }
+        const remainingMembers=chat.members.filter((i)=>i.toString()!==req.user.toString());
+        if(chat.creator.toString()===req.user.toString()){
+            const newCreator=remainingMembers[0];
+            chat.creator=newCreator;    
+        }
+
+        chat.members=remainingMembers;
+        const user=await User.findById(req.user,"name");
+        await chat.save();
+        emitEvent(req,ALERT,chat.members,`${user.name} left ${chat.name} group`);
+
+
+        res.status(200).json({
+            success:true,
+            message:" Member removed successfully"
+        })
+
+        
+
+
+    } catch (error) {
+        res.status(500).json({
+            success:false,
+            message:error.message
+        })
+    }
+}
+
+export const sendAttachments=async(req,res,next)=>{
+    try {
+        const {chatId}=req.body;
+        if(!chatId){
+            return res.status(400).json({
+                success:false,
+                message:"Chat id is required"
+            })
+        }
+        
+        
+    } catch (error) {
+        next(error);
+    }
 }
