@@ -300,6 +300,14 @@ export const leaveGroup = async (req, res, next) => {
 export const sendAttachments = async (req, res, next) => {
 	try {
 		const { chatId } = req.body;
+		const file = req.files || [];
+
+		if(file.length<1){
+			return next(new ErrorHandler("Please upload Attachments",400))
+		}
+		if(file.length>5){
+			return next(new ErrorHandler("Files can't be more than 5",400))
+		}
 		if (!chatId) {
 			return res.status(400).json({
 				success: false,
@@ -438,62 +446,59 @@ export const deleteChat = async (req, res, next) => {
 			);
 		}
 
-    // cloudinary delete files
+		// cloudinary delete files
 
-    const messageWithAttachments=await Message.find({
-      chat:chatId,
-      attachments:{$exists:true,$ne:[]}
-    })
+		const messageWithAttachments = await Message.find({
+			chat: chatId,
+			attachments: { $exists: true, $ne: [] },
+		});
 
-    const public_ids=[]
+		const public_ids = [];
 
+		messageWithAttachments.forEach(({ attachments }) => {
+			attachments.forEach(({ public_id }) => {
+				public_ids.push(public_id);
+			});
+		});
 
-    messageWithAttachments.forEach(({attachments})=>{
-      attachments.forEach(({public_id})=>{
-        public_ids.push(public_id);
-      })
-    })
+		await Promise.all([
+			deleteFilesFromCloudinary(public_ids),
+			chat.deleteOne(),
+			Message.deleteMany({ chat: chatId }),
+		]);
 
-    await Promise.all([
-      deleteFilesFromCloudinary(public_ids),chat.deleteOne(),
-      Message.deleteMany({chat:chatId})
-    ]);
-
-    emitEvent(req, REFETCH_CHATS, members);
+		emitEvent(req, REFETCH_CHATS, members);
 
 		return res.status(200).json({
 			success: true,
 			message: "chat deleted successfully",
 		});
-
 	} catch (error) {
 		next(error);
 	}
 };
 
-
-export const  getMessages=async(req,res,next)=>{
-    try {
-      const chatId=req.params.id;
-      const {page=1}=req.query;
-      const limit=20
-      const [messages,totalMessagesCount]=await Promise.all([
-        Message.find({chat:chatId})
-        .sort({createdAt:-1})
-        .skip((page-1)*limit)
-        .limit(limit)
-        .populate("sender","name")
-        .lean(),
-        Message.countDocuments({chat:chatId})
-      ]) 
-      const totalPages=Math.cell(totalMessagesCount/limit)||0;
-        return res.status(200).json({
-          success:true,
-          messages:messages.reverse(),
-          totalPages
-        })
-      
-    } catch (error) {
-      next(error)
-    }
-}
+export const getMessages = async (req, res, next) => {
+	try {
+		const chatId = req.params.id;
+		const { page = 1 } = req.query;
+		const limit = 20;
+		const [messages, totalMessagesCount] = await Promise.all([
+			Message.find({ chat: chatId })
+				.sort({ createdAt: -1 })
+				.skip((page - 1) * limit)
+				.limit(limit)
+				.populate("sender", "name")
+				.lean(),
+			Message.countDocuments({ chat: chatId }),
+		]);
+		const totalPages = Math.cell(totalMessagesCount / limit) || 0;
+		return res.status(200).json({
+			success: true,
+			messages: messages.reverse(),
+			totalPages,
+		});
+	} catch (error) {
+		next(error);
+	}
+};
