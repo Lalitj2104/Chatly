@@ -10,6 +10,10 @@ import { NEW_MESSAGE, NEW_MESSAGE_ALERT } from "./constants/events.js";
 import { v4 as uuid } from "uuid";
 import { getSockets } from "./lib/helper.js";
 import { Message } from "./models/message.js";
+import cors from "cors"
+
+
+
 const app = express();
 
 export const server = createServer(app);
@@ -18,9 +22,13 @@ const io = new Server(server, {});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use("/user", router);
-app.use("/chats", cRouter);
-app.use("/admin", adminRouter);
+app.use(cors({
+	origin:"http://localhost:5173",
+	credentials:true
+}))
+app.use("/api/v1/user", router);
+app.use("/api/v1/chats", cRouter);
+app.use("/api/v1/admin", adminRouter);
 
 export const userSocketIDs = new Map();
 
