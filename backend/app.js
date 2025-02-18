@@ -1,16 +1,16 @@
-import express from "express";
-import { router } from "./routes/user.js";
 import cookieParser from "cookie-parser";
-import { errorMiddleware } from "./middlewares/error.js";
-import { cRouter } from "./routes/chat.js";
-import { adminRouter } from "./routes/admin.js";
-import { Server } from "socket.io";
+import cors from "cors";
+import express from "express";
 import { createServer } from "http";
-import { NEW_MESSAGE, NEW_MESSAGE_ALERT } from "./constants/events.js";
+import { Server } from "socket.io";
 import { v4 as uuid } from "uuid";
+import { NEW_MESSAGE, NEW_MESSAGE_ALERT } from "./constants/events.js";
 import { getSockets } from "./lib/helper.js";
+import { errorMiddleware } from "./middlewares/error.js";
 import { Message } from "./models/message.js";
-import cors from "cors"
+import { adminRouter } from "./routes/admin.js";
+import { cRouter } from "./routes/chat.js";
+import { router } from "./routes/user.js";
 
 
 
@@ -33,8 +33,7 @@ app.use("/api/v1/admin", adminRouter);
 export const userSocketIDs = new Map();
 
 io.use((socket,next)=>{
-
-    
+ 
 })
 io.on("connection", (socket) => {
 	const user = { _id:"asdsdsa", name:"server" };

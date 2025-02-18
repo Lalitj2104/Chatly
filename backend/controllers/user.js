@@ -1,6 +1,6 @@
 import express from "express";
 import { User } from "../models/user.js";
-import { emitEvent, sendToken } from "../utils/features.js";
+import { emitEvent, sendToken, uploadFilesToCloudinary } from "../utils/features.js";
 import { cookieOptions } from "../utils/features.js";
 import ErrorHandler from "../utils/utility.js";
 import { Request } from "./../models/request.js";
@@ -10,22 +10,18 @@ import { getOtherMember } from './../lib/helper.js';
 
 export const newUser = async (req, res) => {
 	try {
-		const { name, username, password, avatar } = req.body;
+		const { name,email, username, password, avatar } = req.body;
 		const file=req.file;
-		if (!name || !username || !password || !avatar) {
-			return res.status(400).json({
-				success: false,
-				message: "All fields are required",
-			});
-		}
+		const result =await uploadFilesToCloudinary([file]);
 
 		const avatarData = {
-			public_id: "12345",
-			url: "hjaskduc",
+			public_id: result[0].public_id,
+			url: result[0].url,
 		};
-
+		console.log(avatarData)
 		const user = await User.create({
 			name,
+			email,
 			username,
 			password,
 			avatar: avatarData,
@@ -44,12 +40,6 @@ export const login = async (req, res, next) => {
 	try {
 		const { username, password } = req.body;
 
-		if (!username || !password) {
-			return res.status(400).json({
-				success: false,
-				message: "All fields are required",
-			});
-		}
 		const user = await User.findOne({ username }).select("+password");
 		if (!user) {
 			return next(new ErrorHandler("Invalid Username or password", 400));
@@ -60,7 +50,10 @@ export const login = async (req, res, next) => {
 		}
 		sendToken(res, user, 200, "Login successful");
 	} catch (error) {
-		next(error);
+		res.status(500).json({
+			success: false,
+			message: error.message,
+		});
 	}
 };
 

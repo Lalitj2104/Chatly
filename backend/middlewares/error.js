@@ -17,6 +17,6 @@ export const errorMiddleware = (err, req, res, next) => {
     }
     return res.status(err.statusCode).json({
         success: false,
-        message: process.env.NODE_ENV.trim()==="DEVELOPMENT"?err:err.message,
+        message:err.message,
     })
 }

@@ -1,23 +1,26 @@
-import React, { useState } from "react";
+import { useFileHandler, useInputValidation, useStrongPassword } from "6pp";
+import { CameraAlt } from "@mui/icons-material";
 import {
 	Avatar,
 	Button,
 	Container,
 	IconButton,
 	Paper,
+	Stack,
 	TextField,
 	Typography,
-	Stack,
 } from "@mui/material";
-import { CameraAlt } from "@mui/icons-material";
-import { HiddenInput } from "../components/styles/styledComponent";
-import { useFileHandler, useInputValidation, useStrongPassword } from "6pp";
-import { UsernameValidator } from "../utils/Validators";
 import axios from "axios";
-import { server } from "../constants/config";
-import { useDispatch } from "react-redux";
-import { userExists } from "../redux/reducers/auth";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { HiddenInput } from "../components/styles/styledComponent";
+import { server } from "../constants/config";
+import { userExists } from "../redux/reducers/auth";
+import { UsernameValidator } from "../utils/Validators";
+
+
+
 const Login = () => {
 	const [isLogin, setIsLogin] = useState(true);
 	const ifLogin = () => setIsLogin((prev) => !prev);
@@ -48,11 +51,31 @@ const Login = () => {
 			dispatch(userExists(true));
 			toast.success(data.message);
 		} catch (error) {
-			toast.error(error?.response?.data?.message || "Something Went Wrong");
+			toast.error( JSON.stringify(error?.response?.data?.message) || "Something Went Wrong");
 		}
 	};
-	const handleSignUp = (e) => {
+	const handleSignUp = async(e) => {
 		e.preventDefault();
+
+		const formData= new FormData();
+		formData.append("name", name.value);
+		formData.append("email", email.value);
+		formData.append("username", username.value);
+		formData.append("password", password.value);
+		formData.append("avatar", avatar.file);
+
+		try {
+			const { data } = await axios.post(`${server}/api/v1/user/signup`, formData,{
+				withCredentials: true
+				,headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			});
+			dispatch(userExists(true));
+			toast.success(data.message);
+		} catch (error) {
+			toast.error( JSON.stringify(error?.response?.data?.message )|| "Something Went Wrong");
+		}
 	};
 
 	return (
@@ -85,6 +108,8 @@ const Login = () => {
 								label="Username"
 								margin="normal"
 								variant="outlined"
+								value={username.value}
+								onChange={username.changeHandler}
 							/>
 							<TextField
 								required
@@ -93,6 +118,8 @@ const Login = () => {
 								type="password"
 								margin="normal"
 								variant="outlined"
+								value={password.value} 
+  onChange={password.changeHandler} 
 							/>
 
 							<Button

@@ -7,8 +7,8 @@ import { acceptRequestValidator, loginValidator, registerValidator, sendRequestV
 export const router=express.Router();
 
 router.post('/login',loginValidator(),validate,login);
-router.post('/new',singleUpload,registerValidator(),validate, newUser);
-router.get("/myProfile",isAuthenticated ,getMyProfile)
+router.post('/signup',singleUpload,registerValidator(),validate, newUser);
+router.get("/me",isAuthenticated ,getMyProfile)
 router.get("/logout",isAuthenticated,logout)
 router.get("/search",isAuthenticated,searchUser)
 router.get("/sendRequest",isAuthenticated,sendRequestValidator(),validate,sendFriendRequest)
