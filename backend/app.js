@@ -27,7 +27,7 @@ app.use(cors({
 	credentials:true
 }))
 app.use("/api/v1/user", router);
-app.use("/api/v1/chats", cRouter);
+app.use("/api/v1/chat", cRouter);
 app.use("/api/v1/admin", adminRouter);
 
 export const userSocketIDs = new Map();

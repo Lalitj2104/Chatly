@@ -1,26 +1,49 @@
 import React from "react";
 import Header from "../shared/Header";
 import Title from "../shared/Title";
-import { Grid } from "@mui/material";
+import { Drawer, Grid, Skeleton } from "@mui/material";
 import ChatList from "../specific/ChatList";
 import { sampleChats } from "../../constants/sampleData";
 import { useParams } from "react-router-dom";
 import Profile from "../specific/Profile";
+import { useMyChatsQuery } from "../../redux/api/api";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsMobileMenuFriend } from "../../redux/reducers/misc";
 
 export const AppLayout = () => (WrappedComponent) => {
   return (props) => {
     const parms = useParams();
     const chatId = parms.id;
 
+    const {isMobileMenuFriend}=useSelector((state)=>state.misc);
+    const dispatch=useDispatch();
+    const {isLoading,data}=useMyChatsQuery("")
+
+      console.log(data);
     const handleDeleteChat = (e, _id, groupChat) => {
       e.preventDefault();
       console.log("Delete chat", _id, groupChat);
     };
+
+    const handleMobileClose=()=>{
+      dispatch(setIsMobileMenuFriend(false))
+    }
     return (
       <>
         <Title title={"Chatly"} />
         <Header />
-
+      
+      {
+        isLoading?<Skeleton/>:
+        <Drawer open={isMobileMenuFriend} onClose={handleMobileClose}>
+        <ChatList 
+          width="70vw"
+              chats={data?.chats }
+              chatId={chatId}
+              handleDeleteChat={handleDeleteChat}
+            />
+        </Drawer>
+      }
         <Grid
           container
           height={"calc(100vh - 4rem)"}
@@ -39,11 +62,11 @@ export const AppLayout = () => (WrappedComponent) => {
             }}
             height={"100%"}
           >
-            <ChatList
-              chats={sampleChats}
+            {isLoading?<Skeleton/>:<ChatList
+              chats={data?.chats }
               chatId={chatId}
               handleDeleteChat={handleDeleteChat}
-            />
+            />}
           </Grid>
           <Grid item xs={12} sm={8} lg={5} height={"100%"} sx={{padding:0,spacing:0}}>
             <WrappedComponent {...props} />
